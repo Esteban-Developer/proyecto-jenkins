@@ -22,12 +22,16 @@ pipeline {
 
         stage('Desplegar página') {
             steps {
-                sh '''
-                  docker rm -f miweb || true
-                  docker run -d --name miweb -p 8081:80 \
-                  -v $WORKSPACE/index.html:/usr/share/nginx/html/index.html \
-                  nginx:alpine
-                '''
+                script {
+                    docker.withServer("tcp://dind:2375") {
+                        sh '''
+                          docker rm -f miweb || true
+                          docker run -d --name miweb -p 8081:80 \
+                          -v $WORKSPACE/index.html:/usr/share/nginx/html/index.html \
+                          nginx:alpine
+                        '''
+                    }
+                }
             }
         }
     }
