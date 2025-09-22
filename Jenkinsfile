@@ -25,16 +25,13 @@ pipeline {
                 script {
                     docker.withServer("tcp://dind:2375") {
                         sh '''
-                          echo "🔹 Eliminando contenedor anterior si existe..."
+                          # Borrar cualquier contenedor viejo
                           docker rm -f miweb || true
                           
-                          echo "🔹 Creando nuevo contenedor Nginx..."
-                          docker run -d --name miweb -p 8081:80 nginx:alpine
-                          
-                          echo "🔹 Copiando index.html al contenedor..."
-                          docker cp /var/jenkins_home/workspace/proyecto-jenkins/index.html miweb:/usr/share/nginx/html/index.html
-                          
-                          echo "✅ Despliegue completado. Accede a http://localhost:8081"
+                          # Crear contenedor nuevo y montar el workspace completo
+                          docker run -d --name miweb -p 8081:80 \
+                            -v /var/jenkins_home/workspace/proyecto-jenkins:/usr/share/nginx/html \
+                            nginx:alpine
                         '''
                     }
                 }
