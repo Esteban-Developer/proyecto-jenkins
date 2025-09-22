@@ -1,0 +1,26 @@
+services:
+  jenkins:
+    container_name: jenkins-ci
+    image: jenkins/jenkins:lts-jdk21
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+    user: root
+    privileged: true
+    restart: unless-stopped
+
+  dind:
+    image: docker:dind
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=   # desactiva TLS
+    ports:
+      - "2375:2375"
+    volumes:
+      - dind-storage:/var/lib/docker
+
+volumes:
+  jenkins_data:
+  dind-storage:
