@@ -25,12 +25,12 @@ pipeline {
                 script {
                     docker.withServer("tcp://dind:2375") {
                         sh '''
-                          # Si existe un contenedor viejo, eliminarlo
+                          # Eliminar si existe contenedor viejo
                           docker rm -f miweb || true
                           
-                          # Crear el contenedor con la carpeta completa montada
+                          # Crear nuevo contenedor Nginx con volumen al workspace real de Jenkins
                           docker run -d --name miweb -p 8081:80 \
-                            -v $WORKSPACE:/usr/share/nginx/html \
+                            -v /var/jenkins_home/workspace/proyecto-jenkins:/usr/share/nginx/html \
                             nginx:alpine
                         '''
                     }
