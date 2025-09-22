@@ -25,10 +25,13 @@ pipeline {
                 script {
                     docker.withServer("tcp://dind:2375") {
                         sh '''
+                          # Si existe un contenedor viejo, eliminarlo
                           docker rm -f miweb || true
+                          
+                          # Crear el contenedor con la carpeta completa montada
                           docker run -d --name miweb -p 8081:80 \
-                          -v $WORKSPACE/index.html:/usr/share/nginx/html/index.html \
-                          nginx:alpine
+                            -v $WORKSPACE:/usr/share/nginx/html \
+                            nginx:alpine
                         '''
                     }
                 }
