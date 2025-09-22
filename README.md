@@ -3,7 +3,7 @@ Proyecto CI/CD con Jenkins y Docker
 Este proyecto implementa un flujo de integración y despliegue continuo (CI/CD) usando Jenkins + Docker.
 El resultado final es el despliegue de una página web sencilla (index.html) en un contenedor Nginx, accesible desde el navegador.
 
-🚀 Pasos para ejecutar el proyecto
+- Pasos para ejecutar el proyecto
 1. Clonar el repositorio
 git clone https://github.com/Esteban-Developer/proyecto-jenkins.git
 cd proyecto-jenkins
